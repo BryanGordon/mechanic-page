@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Contacto">
+  <section class="stub">
+    <p class="eyebrow" data-reveal>Contacto</p>
+    <h1 data-reveal>Esta sección se construye en el siguiente paso.</h1>
+  </section>
+</Layout>
+
+<style>
+  .stub {
+    display: grid;
+    gap: 22px;
+    align-content: center;
+    min-height: 56vh;
+    max-width: 760px;
+  }
+
+  .stub h1 {
+    font-size: clamp(2rem, 3.4vw, 3rem);
+    opacity: 0.75;
+  }
+</style>

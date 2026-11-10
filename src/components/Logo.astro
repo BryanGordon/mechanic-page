@@ -1,0 +1,85 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+const teeth = [0, 45, 90, 135, 180, 225, 270, 315];
+---
+
+<a class:list={['brand', { 'brand--compact': compact }]} href="/" aria-label="Nova Motor — inicio">
+  <span class="brand__mark" aria-hidden="true">
+    <svg viewBox="0 0 48 48" fill="none">
+      <circle cx="24" cy="24" r="11" stroke="currentColor" stroke-width="2" />
+      {teeth.map((angle) => (
+        <rect
+          x="22.6"
+          y="1.5"
+          width="2.8"
+          height="6.5"
+          rx="1.4"
+          fill="currentColor"
+          transform={`rotate(${angle} 24 24)`}
+        />
+      ))}
+      <circle cx="24" cy="24" r="4" fill="currentColor" />
+    </svg>
+  </span>
+  <span class="brand__text">
+    <strong>NOVA MOTOR</strong>
+    <em>Taller mecánico</em>
+  </span>
+</a>
+
+<style>
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    flex: 0 0 auto;
+  }
+
+  .brand__mark {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    color: var(--c-neon);
+    filter: drop-shadow(0 0 6px rgba(255, 207, 229, 0.55));
+  }
+
+  .brand__mark svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .brand__text {
+    display: grid;
+    gap: 2px;
+    line-height: 1;
+  }
+
+  .brand__text strong {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+  }
+
+  .brand__text em {
+    font-style: normal;
+    font-size: 0.66rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.65;
+  }
+
+  .brand--compact .brand__mark {
+    width: 34px;
+    height: 34px;
+  }
+
+  .brand--compact .brand__text strong {
+    font-size: 0.92rem;
+  }
+</style>

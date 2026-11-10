@@ -1,0 +1,100 @@
+---
+import Logo from './Logo.astro';
+import { navLinks } from '../data/site';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class="navbar" data-navbar>
+  <div class="navbar__inner">
+    <Logo />
+
+    <nav class="navbar__nav" aria-label="Navegación principal">
+      {navLinks.map((link) => (
+        <a
+          class:list={['nav-link', { 'is-active': isActive(link.href) }]}
+          href={link.href}
+          aria-current={isActive(link.href) ? 'page' : undefined}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .navbar {
+    position: relative;
+    z-index: 20;
+    background: var(--c-bg);
+  }
+
+  /* Neon edge on the top of the navbar */
+  .navbar::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    background: var(--c-neon);
+    box-shadow:
+      0 0 4px var(--c-neon),
+      0 0 14px rgba(255, 207, 229, 0.85),
+      0 0 32px rgba(255, 207, 229, 0.45),
+      0 0 64px rgba(255, 207, 229, 0.25);
+  }
+
+  .navbar__inner {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    height: var(--nav-h);
+    padding-inline: var(--gutter);
+  }
+
+  .navbar__nav {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    height: 100%;
+  }
+
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding-inline: 6px;
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.72;
+    transition: opacity 0.25s ease, color 0.25s ease;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: 26px;
+    height: 2px;
+    background: var(--c-neon);
+    box-shadow: 0 0 10px rgba(255, 207, 229, 0.7);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nav-link:hover,
+  .nav-link.is-active {
+    opacity: 1;
+  }
+
+  .nav-link:hover::after,
+  .nav-link.is-active::after {
+    transform: scaleX(1);
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Inicio">
+  <section class="hero">
+    <div class="hero__copy">
+      <p class="eyebrow" data-reveal>Taller mecánico · Desde 2009</p>
+      <h1 class="hero__title" data-reveal>
+        Tu motor merece<br />
+        <span>precisión</span>, no suerte.
+      </h1>
+      <p class="hero__text" data-reveal>
+        Diagnóstico computarizado, mantenimiento preventivo y reparación especializada para
+        vehículos livianos y de alto rendimiento.
+      </p>
+      <div class="hero__actions" data-reveal>
+        <a class="btn btn--primary" href="/servicios">Ver servicios</a>
+        <a class="btn btn--ghost" href="/contacto">Agendar cita</a>
+      </div>
+    </div>
+
+    <figure class="hero__media" data-reveal>
+      <img src="/media/hero.webp" alt="Mecánico trabajando en el motor de un vehículo" />
+    </figure>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: 70px;
+    min-height: 64vh;
+    padding-block: 40px 90px;
+  }
+
+  .hero__copy {
+    display: grid;
+    gap: 26px;
+    justify-items: start;
+    max-width: 620px;
+  }
+
+  .hero__title {
+    font-size: clamp(3rem, 5vw, 4.6rem);
+    text-wrap: balance;
+  }
+
+  .hero__title span {
+    color: var(--c-neon);
+    text-shadow: 0 0 22px rgba(255, 207, 229, 0.35);
+  }
+
+  .hero__text {
+    max-width: 480px;
+    font-size: 1.02rem;
+    opacity: 0.72;
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 6px;
+  }
+
+  .hero__media {
+    margin: 0;
+    position: relative;
+  }
+
+  .hero__media img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+    outline: 1px solid rgba(255, 207, 229, 0.18);
+    outline-offset: 6px;
+  }
+</style>

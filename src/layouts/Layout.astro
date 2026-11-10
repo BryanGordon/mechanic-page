@@ -1,0 +1,88 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = site.description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — {site.name}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#63291D" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <Navbar />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reducedMotion) {
+    const navbar = document.querySelector('[data-navbar]');
+    if (navbar) {
+      gsap.from(navbar, {
+        yPercent: -100,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+      });
+    }
+
+    const revealItems = gsap.utils.toArray<HTMLElement>('[data-reveal]');
+    revealItems.forEach((item) => {
+      gsap.from(item, {
+        y: 46,
+        opacity: 0,
+        duration: 0.85,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 88%',
+          once: true,
+        },
+      });
+    });
+
+    const footer = document.querySelector('[data-footer]');
+    if (footer) {
+      gsap.from(footer, {
+        opacity: 0,
+        y: 60,
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: footer,
+          start: 'top 92%',
+          once: true,
+        },
+      });
+    }
+  }
+</script>

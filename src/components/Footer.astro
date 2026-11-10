@@ -1,0 +1,126 @@
+---
+import Logo from './Logo.astro';
+import { navLinks, site } from '../data/site';
+
+const year = new Date().getFullYear();
+const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`;
+---
+
+<footer class="footer" data-footer>
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <Logo compact />
+      <p class="footer__tagline">
+        Diagnóstico, mantenimiento y reparación con estándares de taller de competición.
+      </p>
+    </div>
+
+    <nav class="footer__col" aria-label="Navegación del pie de página">
+      <h2 class="footer__title">Navegación</h2>
+      <ul class="footer__list">
+        {navLinks.map((link) => (
+          <li><a href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="footer__col">
+      <h2 class="footer__title">Contacto</h2>
+      <ul class="footer__list">
+        <li><a href={telHref(site.phones[0])}>{site.phones[0]}</a></li>
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li><span class="footer__muted">{site.hours}</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <p>© {year} {site.name}. Todos los derechos reservados.</p>
+    <p class="footer__muted">Diseñado para durar tantos kilómetros como tu motor.</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    z-index: 10;
+    background: var(--c-bg);
+    padding-inline: var(--gutter);
+    border-top: 1px solid rgba(255, 207, 229, 0.12);
+  }
+
+  /* Neon edge on the bottom of the footer */
+  .footer::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 2px;
+    background: var(--c-neon);
+    box-shadow:
+      0 0 4px var(--c-neon),
+      0 0 14px rgba(255, 207, 229, 0.85),
+      0 0 32px rgba(255, 207, 229, 0.45),
+      0 0 64px rgba(255, 207, 229, 0.25);
+  }
+
+  .footer__inner {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    gap: 60px;
+    padding-block: 72px 56px;
+  }
+
+  .footer__brand {
+    display: grid;
+    align-content: start;
+    gap: 20px;
+    max-width: 360px;
+  }
+
+  .footer__tagline {
+    font-size: 0.92rem;
+    opacity: 0.68;
+  }
+
+  .footer__title {
+    margin-bottom: 20px;
+    font-family: var(--font-display);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--c-neon);
+  }
+
+  .footer__list {
+    display: grid;
+    gap: 12px;
+    font-size: 0.92rem;
+  }
+
+  .footer__list a {
+    opacity: 0.72;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    display: inline-block;
+  }
+
+  .footer__list a:hover {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+
+  .footer__muted {
+    opacity: 0.5;
+  }
+
+  .footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-block: 26px;
+    border-top: 1px solid rgba(255, 207, 229, 0.12);
+    font-size: 0.8rem;
+    opacity: 0.85;
+  }
+</style>
