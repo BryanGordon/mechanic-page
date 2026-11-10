@@ -15,3 +15,6 @@ npm-debug.log*
 # macOS / Windows
 .DS_Store
 Thumbs.db
+
+#IA
+.atl
