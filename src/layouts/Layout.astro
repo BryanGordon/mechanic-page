@@ -39,15 +39,35 @@ const { title, description = site.description } = Astro.props;
 <script>
   import { gsap, prefersReducedMotion } from '../lib/animations';
 
+  // The navbar intro must not replay on every MPA navigation: one animation per session.
+  const NAV_INTRO_KEY = 'nova-motor:nav-intro';
+
+  const navIntroAlreadyPlayed = () => {
+    try {
+      return sessionStorage.getItem(NAV_INTRO_KEY) === '1';
+    } catch {
+      return false;
+    }
+  };
+
+  const rememberNavIntro = () => {
+    try {
+      sessionStorage.setItem(NAV_INTRO_KEY, '1');
+    } catch {
+      /* Storage can be blocked; in that case the intro simply plays again. */
+    }
+  };
+
   if (!prefersReducedMotion()) {
     const navbar = document.querySelector('[data-navbar]');
-    if (navbar) {
+    if (navbar && !navIntroAlreadyPlayed()) {
       gsap.from(navbar, {
         yPercent: -100,
         opacity: 0,
         duration: 0.9,
         ease: 'power3.out',
       });
+      rememberNavIntro();
     }
 
     const revealItems = gsap.utils.toArray<HTMLElement>('[data-reveal]');
