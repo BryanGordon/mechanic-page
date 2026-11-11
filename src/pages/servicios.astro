@@ -1,25 +1,191 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const services = [
+  {
+    name: 'Reparación',
+    image: '/media/reparacion.jpg',
+    alt: 'Mecánico reparando el motor de un vehículo en el taller',
+    description:
+      'Corregimos la falla, no el síntoma. Diagnóstico con escáner multimarca y prueba en ruta cuando el caso lo exige: motor, transmisión, suspensión, frenos y sistema eléctrico. Cada reparación sale con repuestos de origen documentado y garantía escrita sobre la mano de obra.',
+  },
+  {
+    name: 'Mantenimiento',
+    image: '/media/mantenimiento.jpeg',
+    alt: 'Revisión de mantenimiento preventivo sobre un vehículo',
+    description:
+      'El servicio que evita la reparación. Cambio de aceite y filtros, revisión de niveles, correas, bujías y fluidos según el plan del fabricante. Al terminar recibes un informe con el estado de cada punto revisado y la recomendación para el próximo intervalo.',
+  },
+  {
+    name: 'Limpieza',
+    image: '/media/limpieza.jpg',
+    alt: 'Limpieza técnica del vehículo en el taller',
+    description:
+      'Limpieza técnica, no solo estética. Lavado de inyectores, cuerpo de aceleración, admisión y sistema de refrigeración, además de detallado interior y exterior. Usamos productos que no dañan plásticos, tapicería ni recubrimientos.',
+  },
+];
 ---
 
-<Layout title="Servicios">
-  <section class="stub">
-    <p class="eyebrow" data-reveal>Servicios</p>
-    <h1 data-reveal>Esta sección se construye en el siguiente paso.</h1>
+<Layout
+  title="Servicios"
+  description="Reparación, mantenimiento y limpieza técnica para tu vehículo en Nova Motor."
+>
+  <section class="services" aria-labelledby="services-title">
+    <header class="services__head">
+      <p class="eyebrow" data-reveal>Servicios</p>
+      <h1 class="services__title" id="services-title" data-reveal>
+        Tres formas de cuidar el mismo motor.
+      </h1>
+      <p class="services__lead" data-reveal>
+        No todos los problemas piden lo mismo. Diagnosticamos primero y después te decimos si
+        toca reparar, mantener o limpiar, con el costo claro antes de empezar.
+      </p>
+    </header>
+
+    <ul class="services__list">
+      {services.map((service) => (
+        <li class="service" data-service>
+          <figure class="service__media" data-service-media>
+            <img src={service.image} alt={service.alt} loading="lazy" />
+          </figure>
+
+          <div class="service__body" data-service-body>
+            <h2 class="service__name">{service.name}</h2>
+            <p class="service__desc">{service.description}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <aside class="services__cta">
+      <div class="services__cta-copy">
+        <h2 class="services__cta-title">¿No sabes qué servicio necesitas?</h2>
+        <p class="services__cta-text">
+          Cuéntanos el síntoma y te decimos si es reparación, mantenimiento o limpieza.
+        </p>
+      </div>
+      <a class="btn btn--primary" href="/contacto">Hablar con el taller</a>
+    </aside>
   </section>
 </Layout>
 
 <style>
-  .stub {
-    display: grid;
-    gap: 22px;
-    align-content: center;
-    min-height: 56vh;
-    max-width: 760px;
+  .services {
+    padding-block: 30px 100px;
   }
 
-  .stub h1 {
-    font-size: clamp(2rem, 3.4vw, 3rem);
-    opacity: 0.75;
+  .services__head {
+    display: grid;
+    gap: 20px;
+    max-width: 880px;
+    margin-bottom: 76px;
+  }
+
+  .services__title {
+    font-size: clamp(2.6rem, 4.4vw, 4.2rem);
+    text-wrap: balance;
+  }
+
+  .services__lead {
+    max-width: 560px;
+    font-size: 1rem;
+    opacity: 0.7;
+  }
+
+  .services__list {
+    display: grid;
+  }
+
+  .service {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 64px;
+    padding-block: 56px;
+    border-top: 1px solid rgba(242, 242, 242, 0.1);
+  }
+
+  .service__media {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius);
+  }
+
+  .service__media img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radius);
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .service:hover .service__media img {
+    transform: scale(1.03);
+  }
+
+  .service__body {
+    display: grid;
+    gap: 16px;
+    max-width: 520px;
+  }
+
+  .service__name {
+    font-size: clamp(1.9rem, 2.6vw, 2.6rem);
+  }
+
+  .service__desc {
+    font-size: 0.98rem;
+    opacity: 0.74;
+  }
+
+  .services__cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+    margin-top: 84px;
+    padding: 44px;
+    border: 1px solid rgba(255, 207, 229, 0.22);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .services__cta-copy {
+    display: grid;
+    gap: 10px;
+  }
+
+  .services__cta-title {
+    font-size: 1.6rem;
+  }
+
+  .services__cta-text {
+    font-size: 0.94rem;
+    opacity: 0.72;
   }
 </style>
+
+<script>
+  import { gsap, prefersReducedMotion } from '../lib/animations';
+
+  const rows = gsap.utils.toArray<HTMLElement>('[data-service]');
+
+  if (!prefersReducedMotion()) {
+    rows.forEach((row) => {
+      const media = row.querySelector('[data-service-media]');
+      const body = row.querySelector('[data-service-body]');
+      if (!media || !body) return;
+
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: row,
+          start: 'top 82%',
+          once: true,
+        },
+      });
+
+      timeline
+        .from(media, { x: -60, opacity: 0, duration: 0.9, ease: 'power3.out' })
+        .from(body, { x: 60, opacity: 0, duration: 0.9, ease: 'power3.out' }, '<0.12');
+    });
+  }
+</script>
