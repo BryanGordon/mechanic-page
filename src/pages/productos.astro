@@ -1,25 +1,183 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const products = [
+  {
+    name: 'Aceite sintético 5W-30',
+    image: '/media/aceite-products.webp',
+    alt: 'Botella de aceite sintético 5W-30',
+    description:
+      'Lubricante sintético de alto rendimiento para motores modernos. Protección térmica estable, menor consumo y arranque suave en frío. Presentación de 4 litros.',
+  },
+  {
+    name: 'Ambientador premium',
+    image: '/media/ambientador-products.webp',
+    alt: 'Ambientador para auto',
+    description:
+      'Difusor de larga duración con notas cítricas y madera. No mancha plásticos ni tapicería y mantiene el aroma hasta 60 días.',
+  },
+  {
+    name: 'Radio multimedia 7″',
+    image: '/media/radio-products.jpg',
+    alt: 'Radio multimedia con pantalla táctil de 7 pulgadas',
+    description:
+      'Pantalla táctil de 7 pulgadas con CarPlay y Android Auto, Bluetooth, USB y cámara de reversa. Instalación con arnés original, sin cortes en el cableado.',
+  },
+  {
+    name: 'Neumáticos 205/55 R16',
+    image: '/media/neumaticos-products.avif',
+    alt: 'Neumático de verano 205/55 R16',
+    description:
+      'Compuesto de verano con buen agarre en mojado y rodadura silenciosa. Incluye montaje, balanceo y válvulas nuevas.',
+  },
+  {
+    name: 'Rines 17″',
+    image: '/media/rines-products.webp',
+    alt: 'Rin deportivo de aleación ligera de 17 pulgadas',
+    description:
+      'Aleación ligera de 17 pulgadas con acabado mate. Mejora la respuesta de la dirección sin sacrificar confort.',
+    wide: true,
+  },
+];
 ---
 
-<Layout title="Productos">
-  <section class="stub">
-    <p class="eyebrow" data-reveal>Productos</p>
-    <h1 data-reveal>Esta sección se construye en el siguiente paso.</h1>
+<Layout
+  title="Productos"
+  description="Aceites, neumáticos, rines, audio y accesorios disponibles en Nova Motor."
+>
+  <section class="products" aria-labelledby="products-title">
+    <header class="products__head">
+      <p class="eyebrow" data-reveal>Productos</p>
+      <h1 class="products__title" id="products-title" data-reveal>
+        Repuestos y accesorios que instalamos aquí.
+      </h1>
+      <p class="products__lead" data-reveal>
+        Sin catálogo infinito: solo lo que probamos, montamos y respaldamos con garantía.
+      </p>
+    </header>
+
+    <ul class="products__grid">
+      {products.map((product) => (
+        <li class:list={['product', { 'product--wide': product.wide }]} data-product>
+          <figure class="product__media">
+            <img src={product.image} alt={product.alt} loading="lazy" />
+          </figure>
+
+          <div class="product__body">
+            <h2 class="product__name">{product.name}</h2>
+            <p class="product__desc">{product.description}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
   </section>
 </Layout>
 
 <style>
-  .stub {
-    display: grid;
-    gap: 22px;
-    align-content: center;
-    min-height: 56vh;
-    max-width: 760px;
+  .products {
+    padding-block: 30px 100px;
   }
 
-  .stub h1 {
-    font-size: clamp(2rem, 3.4vw, 3rem);
-    opacity: 0.75;
+  .products__head {
+    display: grid;
+    gap: 20px;
+    max-width: 880px;
+    margin-bottom: 64px;
+  }
+
+  .products__title {
+    font-size: clamp(2.6rem, 4.4vw, 4.2rem);
+    text-wrap: balance;
+  }
+
+  .products__lead {
+    max-width: 560px;
+    font-size: 1rem;
+    opacity: 0.7;
+  }
+
+  .products__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .product {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    align-items: center;
+    gap: 26px;
+    padding: 20px;
+    border-radius: var(--radius);
+    background: var(--c-violet);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .product:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 44px rgba(24, 6, 60, 0.35);
+  }
+
+  .product--wide {
+    grid-column: span 2;
+  }
+
+  .product__media {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  .product__media img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .product:hover .product__media img {
+    transform: scale(1.04);
+  }
+
+  .product__body {
+    display: grid;
+    gap: 12px;
+  }
+
+  .product--wide .product__body {
+    max-width: 640px;
+  }
+
+  .product__name {
+    font-size: 1.34rem;
+    line-height: 1.25;
+  }
+
+  .product__desc {
+    font-size: 0.92rem;
+    color: var(--c-text);
   }
 </style>
+
+<script>
+  import { gsap, prefersReducedMotion } from '../lib/animations';
+
+  const cards = gsap.utils.toArray<HTMLElement>('[data-product]');
+
+  if (!prefersReducedMotion()) {
+    cards.forEach((card) => {
+      gsap.from(card, {
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+          once: true,
+        },
+      });
+    });
+  }
+</script>
