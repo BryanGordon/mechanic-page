@@ -1,0 +1,114 @@
+---
+---
+
+<section class="about" aria-labelledby="about-title">
+  <header class="about__head">
+    <p class="eyebrow" data-reveal>Sobre nosotros</p>
+    <h2 class="about__title" id="about-title" data-reveal>
+      Un taller donde la precisión no es un extra,<br />
+      <span>es el método.</span>
+    </h2>
+  </header>
+
+  <figure class="about__media">
+    <img
+      src="/media/about.png"
+      alt="Interior del taller Nova Motor con un vehículo en el elevador"
+      loading="lazy"
+      data-about-image
+    />
+  </figure>
+
+  <div class="about__body">
+    <p class="about__lead" data-reveal>
+      Desde 2009 trabajamos con un solo principio: nada sale del taller hasta que el diagnóstico,
+      la reparación y las pruebas coinciden. Sin atajos, sin repuestos sin trazabilidad y sin
+      explicaciones que nadie entiende.
+    </p>
+    <p class="about__text" data-reveal>
+      Nuestro equipo combina mecánica general con especialización en sistemas electrónicos,
+      inyección y suspensión. Cada vehículo entra con una ficha técnica abierta y sale con el
+      detalle completo de lo que se hizo, por qué se hizo y qué conviene revisar en el próximo
+      servicio.
+    </p>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding-block: 20px 110px;
+  }
+
+  .about__head {
+    display: grid;
+    gap: 20px;
+    max-width: 900px;
+    margin-bottom: 56px;
+  }
+
+  .about__title {
+    font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+    text-wrap: balance;
+  }
+
+  .about__title span {
+    color: var(--c-rose);
+  }
+
+  .about__media {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius);
+    outline: 1px solid rgba(255, 207, 229, 0.16);
+    outline-offset: 6px;
+  }
+
+  .about__media img {
+    width: 100%;
+    aspect-ratio: 21 / 9;
+    border-radius: var(--radius);
+    will-change: transform;
+  }
+
+  .about__body {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 60px;
+    margin-top: 48px;
+  }
+
+  .about__lead {
+    font-family: var(--font-display);
+    font-size: 1.18rem;
+    line-height: 1.55;
+  }
+
+  .about__text {
+    font-size: 0.98rem;
+    opacity: 0.7;
+  }
+</style>
+
+<script>
+  import { gsap, prefersReducedMotion } from '../../lib/animations';
+
+  const image = document.querySelector<HTMLImageElement>('[data-about-image]');
+
+  if (!prefersReducedMotion() && image) {
+    gsap.fromTo(
+      image,
+      { scale: 1.08, opacity: 0.4 },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 1.4,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: image,
+          start: 'top 85%',
+          once: true,
+        },
+      }
+    );
+  }
+</script>

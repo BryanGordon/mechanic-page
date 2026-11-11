@@ -1,0 +1,97 @@
+---
+interface Props {
+  name: string;
+  initials: string;
+  problem: string;
+  text: string;
+}
+
+const { name, initials, problem, text } = Astro.props;
+---
+
+<article class="testimonial">
+  <span class="testimonial__quote" aria-hidden="true">“</span>
+
+  <div class="testimonial__person">
+    <span class="testimonial__avatar" aria-hidden="true">{initials}</span>
+    <div class="testimonial__id">
+      <h3 class="testimonial__name">{name}</h3>
+      <p class="testimonial__problem">{problem}</p>
+    </div>
+  </div>
+
+  <p class="testimonial__text">{text}</p>
+</article>
+
+<style>
+  .testimonial {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 100%;
+    overflow: hidden;
+    padding: 34px;
+    border-radius: var(--radius);
+    background:
+      radial-gradient(120% 120% at 0% 0%, rgba(255, 255, 255, 0.14), transparent 58%),
+      var(--c-violet);
+    box-shadow: 0 24px 56px rgba(24, 6, 60, 0.25);
+  }
+
+  .testimonial__quote {
+    position: absolute;
+    top: 6px;
+    right: 22px;
+    font-family: var(--font-display);
+    font-size: 5.4rem;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.12);
+    pointer-events: none;
+  }
+
+  .testimonial__person {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .testimonial__avatar {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+    border: 1px solid rgba(255, 207, 229, 0.5);
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--c-neon);
+  }
+
+  .testimonial__id {
+    display: grid;
+    gap: 4px;
+  }
+
+  .testimonial__name {
+    font-size: 1.04rem;
+    line-height: 1.2;
+  }
+
+  .testimonial__problem {
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-neon);
+    opacity: 0.85;
+  }
+
+  .testimonial__text {
+    font-size: 0.94rem;
+    line-height: 1.65;
+    opacity: 0.82;
+  }
+</style>

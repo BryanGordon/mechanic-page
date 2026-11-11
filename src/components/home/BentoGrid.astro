@@ -1,0 +1,172 @@
+---
+const cards = [
+  {
+    area: 'experience',
+    kicker: 'Experiencia',
+    stat: '15+',
+    title: 'Años resolviendo lo que otros descartaron',
+    text: 'Desde 2009 atendemos flotas, autos de uso diario y proyectos de preparación. La experiencia no está en la pared: está en el criterio con el que se diagnostica.',
+  },
+  {
+    area: 'benefits',
+    kicker: 'Beneficios',
+    title: 'Diagnóstico antes de cotizar',
+    text: 'Primero medimos, después proponemos. Recibes la falla identificada, el costo por escrito y las opciones reales de reparación antes de autorizar nada.',
+  },
+  {
+    area: 'quality',
+    kicker: 'Calidad',
+    title: 'Repuestos con trazabilidad',
+    text: 'Cada pieza que instalamos tiene origen, lote y garantía documentados.',
+  },
+  {
+    area: 'equipment',
+    kicker: 'Equipamiento',
+    title: 'Equipo de diagnóstico propio',
+    text: 'Escáner multimarca, banco de pruebas y herramienta calibrada.',
+  },
+];
+---
+
+<section class="bento" aria-labelledby="bento-title" data-bento>
+  <header class="bento__head">
+    <p class="eyebrow" data-reveal>Por qué elegirnos</p>
+    <h2 class="bento__title" id="bento-title" data-reveal>Lo que hay detrás de cada servicio.</h2>
+  </header>
+
+  <div class="bento__grid">
+    {cards.map((card) => (
+      <article class:list={['bento__card', `bento__card--${card.area}`]} data-bento-card>
+        {card.stat && <span class="bento__stat">{card.stat}</span>}
+        <div class="bento__content">
+          <p class="bento__kicker">{card.kicker}</p>
+          <h3 class="bento__card-title">{card.title}</h3>
+          <p class="bento__text">{card.text}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .bento {
+    padding-bottom: 110px;
+  }
+
+  .bento__head {
+    display: grid;
+    gap: 18px;
+    max-width: 720px;
+    margin-bottom: 48px;
+  }
+
+  .bento__title {
+    font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+    text-wrap: balance;
+  }
+
+  .bento__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, minmax(240px, auto));
+    grid-template-areas:
+      'experience experience benefits benefits'
+      'experience experience quality equipment';
+    gap: 20px;
+  }
+
+  .bento__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 28px;
+    padding: 34px;
+    border-radius: var(--radius);
+    background:
+      radial-gradient(120% 120% at 100% 0%, rgba(255, 255, 255, 0.14), transparent 62%),
+      var(--c-violet);
+    box-shadow: 0 26px 60px rgba(24, 6, 60, 0.25);
+  }
+
+  .bento__card--experience {
+    grid-area: experience;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .bento__card--experience .bento__content {
+    justify-items: center;
+    max-width: 460px;
+  }
+
+  .bento__card--benefits {
+    grid-area: benefits;
+  }
+
+  .bento__card--quality {
+    grid-area: quality;
+  }
+
+  .bento__card--equipment {
+    grid-area: equipment;
+  }
+
+  .bento__content {
+    display: grid;
+    gap: 10px;
+  }
+
+  .bento__stat {
+    font-family: var(--font-display);
+    font-size: 96px;
+    font-weight: 700;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    color: var(--c-neon);
+  }
+
+  .bento__kicker {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0.68;
+  }
+
+  .bento__card-title {
+    font-size: 1.32rem;
+    line-height: 1.25;
+  }
+
+  .bento__card--experience .bento__card-title {
+    font-size: 1.62rem;
+  }
+
+  .bento__text {
+    font-size: 0.92rem;
+    opacity: 0.78;
+  }
+</style>
+
+<script>
+  import { gsap, prefersReducedMotion } from '../../lib/animations';
+
+  const grid = document.querySelector('[data-bento]');
+  const cards = gsap.utils.toArray<HTMLElement>('[data-bento-card]');
+
+  if (!prefersReducedMotion() && grid) {
+    gsap.from(cards, {
+      y: 60,
+      opacity: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+      stagger: 0.12,
+      scrollTrigger: {
+        trigger: grid,
+        start: 'top 78%',
+        once: true,
+      },
+    });
+  }
+</script>

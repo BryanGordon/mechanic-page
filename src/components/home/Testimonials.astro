@@ -1,0 +1,206 @@
+---
+import TestimonialCard from '../TestimonialCard.astro';
+
+const testimonials = [
+  {
+    name: 'Andrea Salazar',
+    initials: 'AS',
+    problem: 'Cambio de embrague',
+    text: 'Llegué con el pedal al fondo y la caja golpeando. Me explicaron el desgaste con las piezas en la mano, me dieron el presupuesto cerrado y el auto quedó listo en dos días. Nunca sentí que me vendieran algo que no necesitaba.',
+  },
+  {
+    name: 'Marco Delgado',
+    initials: 'MD',
+    problem: 'Falla eléctrica intermitente',
+    text: 'El auto se apagaba en pleno tráfico y en otros talleres solo me reseteaban la computadora. Aquí siguieron el circuito hasta un conector suelto, lo corrigieron y me mostraron la prueba. Un año después, cero fallas.',
+  },
+  {
+    name: 'Lucía Ferrer',
+    initials: 'LF',
+    problem: 'Mantenimiento de 60 000 km',
+    text: 'Reservé por teléfono, entregué el auto a las 8 y a las 4 ya tenía el informe con fotos del estado de cada punto revisado. Salí sabiendo exactamente en qué condición estaba mi carro.',
+  },
+  {
+    name: 'Javier Ríos',
+    initials: 'JR',
+    problem: 'Reparación de suspensión',
+    text: 'El ruido sobre los rompemuelles me tenía harto. Diagnóstico en una hora, reparación al día siguiente y prueba de manejo conmigo al lado para confirmar que había desaparecido. Trato directo, sin vueltas.',
+  },
+  {
+    name: 'Carmen Ibáñez',
+    initials: 'CI',
+    problem: 'Frenos y discos',
+    text: 'Me mostraron las pastillas gastadas y me dieron dos opciones con precio y duración. Elegí la intermedia y me explicaron por qué era suficiente para mi uso. Frenó como nueva desde la primera cuadra.',
+  },
+];
+---
+
+<section class="testimonials" aria-labelledby="testimonials-title" data-carousel>
+  <header class="testimonials__head">
+    <div class="testimonials__intro">
+      <p class="eyebrow" data-reveal>Testimonios</p>
+      <h2 class="testimonials__title" id="testimonials-title" data-reveal>
+        Lo que cuentan quienes ya pasaron por el taller.
+      </h2>
+    </div>
+
+    <div class="testimonials__controls">
+      <p class="testimonials__counter" data-carousel-counter>01 / 03</p>
+      <button class="carousel-btn" type="button" data-carousel-prev aria-label="Testimonio anterior">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M14.5 5.5 8 12l6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button class="carousel-btn" type="button" data-carousel-next aria-label="Testimonio siguiente">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9.5 5.5 16 12l-6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="testimonials__viewport">
+    <ul class="testimonials__track" data-carousel-track>
+      {testimonials.map((testimonial) => (
+        <li class="testimonials__slide">
+          <TestimonialCard {...testimonial} />
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    padding-bottom: 60px;
+  }
+
+  .testimonials__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 44px;
+  }
+
+  .testimonials__intro {
+    display: grid;
+    gap: 18px;
+    max-width: 720px;
+  }
+
+  .testimonials__title {
+    font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+    text-wrap: balance;
+  }
+
+  .testimonials__controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .testimonials__counter {
+    margin-right: 8px;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    opacity: 0.6;
+  }
+
+  .carousel-btn {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 1px solid rgba(255, 207, 229, 0.32);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--c-text);
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .carousel-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .carousel-btn:hover {
+    border-color: var(--c-neon);
+    background: var(--c-neon);
+    color: #2a0f1a;
+    box-shadow: 0 0 18px rgba(255, 207, 229, 0.35);
+  }
+
+  .testimonials__viewport {
+    overflow: hidden;
+    padding-block: 4px;
+  }
+
+  .testimonials__track {
+    display: flex;
+    gap: 20px;
+    will-change: transform;
+  }
+
+  .testimonials__slide {
+    flex: 0 0 calc((100% - 40px) / 3);
+  }
+</style>
+
+<script>
+  import { gsap, prefersReducedMotion } from '../../lib/animations';
+
+  const root = document.querySelector<HTMLElement>('[data-carousel]');
+
+  if (root) {
+    const track = root.querySelector<HTMLElement>('[data-carousel-track]');
+    const slides = track ? Array.from(track.children) : [];
+    const prevBtn = root.querySelector<HTMLButtonElement>('[data-carousel-prev]');
+    const nextBtn = root.querySelector<HTMLButtonElement>('[data-carousel-next]');
+    const counter = root.querySelector<HTMLElement>('[data-carousel-counter]');
+    const perView = 3;
+    const maxIndex = Math.max(0, slides.length - perView);
+    let index = 0;
+
+    const gap = (element: HTMLElement) => parseFloat(getComputedStyle(element).columnGap) || 0;
+
+    const step = () => {
+      if (!track || slides.length === 0) return 0;
+      return slides[0].getBoundingClientRect().width + gap(track);
+    };
+
+    const render = (animate: boolean) => {
+      if (!track) return;
+
+      const offset = -index * step();
+
+      if (animate && !prefersReducedMotion()) {
+        gsap.to(track, { x: offset, duration: 0.75, ease: 'power3.out' });
+      } else {
+        gsap.set(track, { x: offset });
+      }
+
+      if (counter) {
+        const total = String(maxIndex + 1).padStart(2, '0');
+        const current = String(index + 1).padStart(2, '0');
+        counter.textContent = `${current} / ${total}`;
+      }
+    };
+
+    const go = (direction: number) => {
+      const size = maxIndex + 1;
+      index = (index + direction + size) % size;
+      render(true);
+    };
+
+    nextBtn?.addEventListener('click', () => go(1));
+    prevBtn?.addEventListener('click', () => go(-1));
+    window.addEventListener('resize', () => render(false));
+
+    render(false);
+  }
+</script>
