@@ -37,14 +37,9 @@ const { title, description = site.description } = Astro.props;
 </html>
 
 <script>
-  import gsap from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { gsap, prefersReducedMotion } from '../lib/animations';
 
-  gsap.registerPlugin(ScrollTrigger);
-
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!reducedMotion) {
+  if (!prefersReducedMotion()) {
     const navbar = document.querySelector('[data-navbar]');
     if (navbar) {
       gsap.from(navbar, {
