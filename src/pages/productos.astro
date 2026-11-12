@@ -47,11 +47,11 @@ const products = [
 >
   <section class="products" aria-labelledby="products-title">
     <header class="products__head">
-      <p class="eyebrow" data-reveal>Productos</p>
-      <h1 class="products__title" id="products-title" data-reveal>
+      <p class="eyebrow" data-enter>Productos</p>
+      <h1 class="products__title" id="products-title" data-enter>
         Repuestos y accesorios que instalamos aquí.
       </h1>
-      <p class="products__lead" data-reveal>
+      <p class="products__lead" data-enter>
         Sin catálogo infinito: solo lo que probamos, montamos y respaldamos con garantía.
       </p>
     </header>
@@ -161,12 +161,14 @@ const products = [
 </style>
 
 <script>
-  import { gsap, prefersReducedMotion } from '../lib/animations';
+  import { gsap, prefersReducedMotion, startsInViewport } from '../lib/animations';
 
   const cards = gsap.utils.toArray<HTMLElement>('[data-product]');
 
   if (!prefersReducedMotion()) {
     cards.forEach((card) => {
+      if (startsInViewport(card)) return;
+
       gsap.from(card, {
         y: 50,
         opacity: 0,

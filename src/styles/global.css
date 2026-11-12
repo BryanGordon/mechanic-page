@@ -93,6 +93,43 @@ main {
   color: var(--c-neon);
 }
 
+/*
+ * Entrance for content painted in the first frame (hero and page headers).
+ * It lives in CSS on purpose: a CSS animation starts at the first paint, while
+ * a GSAP `from` tween only runs once the JS bundle is fetched, which made the
+ * content appear and then jump back to hidden on every navigation.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  [data-enter] {
+    animation: enter-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes enter-up {
+  from {
+    opacity: 0;
+    transform: translateY(46px);
+  }
+}
+
+/*
+ * Navbar intro: the inline head script sets data-nav-intro before the first
+ * paint only when the intro has not played yet in this session, so the bar
+ * never appears and then slides away.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-nav-intro] [data-navbar] {
+    animation: nav-drop 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes nav-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
 .btn {
   display: inline-flex;
   align-items: center;

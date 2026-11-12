@@ -17,6 +17,23 @@ const { title, description = site.description } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--
+      Runs before the first paint. The navbar intro is a CSS animation that must
+      start already hidden, otherwise the bar paints and then jumps away.
+    -->
+    <script is:inline>
+      (() => {
+        try {
+          const KEY = 'nova-motor:nav-intro';
+          if (sessionStorage.getItem(KEY) === '1') return;
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          document.documentElement.setAttribute('data-nav-intro', '');
+          sessionStorage.setItem(KEY, '1');
+        } catch {
+          /* Storage blocked: skip the intro instead of risking a jump. */
+        }
+      })();
+    </script>
     <title>{title} — {site.name}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#63291D" />
@@ -37,41 +54,15 @@ const { title, description = site.description } = Astro.props;
 </html>
 
 <script>
-  import { gsap, prefersReducedMotion } from '../lib/animations';
-
-  // The navbar intro must not replay on every MPA navigation: one animation per session.
-  const NAV_INTRO_KEY = 'nova-motor:nav-intro';
-
-  const navIntroAlreadyPlayed = () => {
-    try {
-      return sessionStorage.getItem(NAV_INTRO_KEY) === '1';
-    } catch {
-      return false;
-    }
-  };
-
-  const rememberNavIntro = () => {
-    try {
-      sessionStorage.setItem(NAV_INTRO_KEY, '1');
-    } catch {
-      /* Storage can be blocked; in that case the intro simply plays again. */
-    }
-  };
+  import { gsap, prefersReducedMotion, startsInViewport } from '../lib/animations';
 
   if (!prefersReducedMotion()) {
-    const navbar = document.querySelector('[data-navbar]');
-    if (navbar && !navIntroAlreadyPlayed()) {
-      gsap.from(navbar, {
-        yPercent: -100,
-        opacity: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-      });
-      rememberNavIntro();
-    }
-
     const revealItems = gsap.utils.toArray<HTMLElement>('[data-reveal]');
     revealItems.forEach((item) => {
+      // Anything already painted is left alone: it is animated by the CSS
+      // [data-enter] rule or simply shows static, so it never flashes.
+      if (startsInViewport(item)) return;
+
       gsap.from(item, {
         y: 46,
         opacity: 0,
@@ -86,7 +77,7 @@ const { title, description = site.description } = Astro.props;
     });
 
     const footer = document.querySelector('[data-footer]');
-    if (footer) {
+    if (footer && !startsInViewport(footer)) {
       gsap.from(footer, {
         opacity: 0,
         y: 60,

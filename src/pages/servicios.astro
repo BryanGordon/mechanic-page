@@ -32,11 +32,11 @@ const services = [
 >
   <section class="services" aria-labelledby="services-title">
     <header class="services__head">
-      <p class="eyebrow" data-reveal>Servicios</p>
-      <h1 class="services__title" id="services-title" data-reveal>
+      <p class="eyebrow" data-enter>Servicios</p>
+      <h1 class="services__title" id="services-title" data-enter>
         Tres formas de cuidar el mismo motor.
       </h1>
-      <p class="services__lead" data-reveal>
+      <p class="services__lead" data-enter>
         No todos los problemas piden lo mismo. Diagnosticamos primero y después te decimos si
         toca reparar, mantener o limpiar, con el costo claro antes de empezar.
       </p>
@@ -165,12 +165,14 @@ const services = [
 </style>
 
 <script>
-  import { gsap, prefersReducedMotion } from '../lib/animations';
+  import { gsap, prefersReducedMotion, startsInViewport } from '../lib/animations';
 
   const rows = gsap.utils.toArray<HTMLElement>('[data-service]');
 
   if (!prefersReducedMotion()) {
     rows.forEach((row) => {
+      if (startsInViewport(row)) return;
+
       const media = row.querySelector('[data-service-media]');
       const body = row.querySelector('[data-service-body]');
       if (!media || !body) return;

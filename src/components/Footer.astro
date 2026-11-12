@@ -28,7 +28,7 @@ const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`;
       <h2 class="footer__title">Contacto</h2>
       <ul class="footer__list">
         <li><a href={telHref(site.phones[0])}>{site.phones[0]}</a></li>
-        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li><span class="footer__email">{site.email}</span></li>
         <li><span class="footer__muted">{site.hours}</span></li>
       </ul>
     </div>
@@ -115,13 +115,15 @@ const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`;
     font-size: 0.92rem;
   }
 
-  .footer__list a {
+  .footer__list a,
+  .footer__email {
     opacity: 0.72;
     transition: opacity 0.25s ease, transform 0.25s ease;
     display: inline-block;
   }
 
-  .footer__list a:hover {
+  .footer__list a:hover,
+  .footer__email:hover {
     opacity: 1;
     transform: translateX(4px);
   }

@@ -90,11 +90,11 @@
 </style>
 
 <script>
-  import { gsap, prefersReducedMotion } from '../../lib/animations';
+  import { gsap, prefersReducedMotion, startsInViewport } from '../../lib/animations';
 
   const image = document.querySelector<HTMLImageElement>('[data-about-image]');
 
-  if (!prefersReducedMotion() && image) {
+  if (!prefersReducedMotion() && image && !startsInViewport(image)) {
     gsap.fromTo(
       image,
       { scale: 1.08, opacity: 0.4 },

@@ -152,12 +152,12 @@ const cards = [
 </style>
 
 <script>
-  import { gsap, prefersReducedMotion } from '../../lib/animations';
+  import { gsap, prefersReducedMotion, startsInViewport } from '../../lib/animations';
 
   const grid = document.querySelector('[data-bento]');
   const cards = gsap.utils.toArray<HTMLElement>('[data-bento-card]');
 
-  if (!prefersReducedMotion() && grid) {
+  if (!prefersReducedMotion() && grid && !startsInViewport(grid)) {
     gsap.from(cards, {
       y: 60,
       opacity: 0,
