@@ -8,6 +8,8 @@ export const site = {
     'Calle Los Robles 87 — Urb. Santa Elena',
   ],
   phones: ['+51 987 654 321', '+51 912 345 678', '(01) 445 8890', '+51 998 220 114'],
+  whatsapp: '+51 987 654 321',
+  whatsappMessage: 'Hola, quiero agendar una revisión.',
   email: 'contacto@novamotor.com',
   hours: 'Lunes a sábado · 8:00 a 19:00',
   mapUrl:

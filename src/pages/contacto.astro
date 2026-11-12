@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import { site } from '../data/site';
 
 const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`;
+
+const whatsappHref = `https://web.whatsapp.com/send?phone=${site.whatsapp.replace(/\D/g, '')}&text=${encodeURIComponent(site.whatsappMessage)}`;
 ---
 
 <Layout
@@ -45,10 +47,16 @@ const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`;
 
         <article class="contact__block" data-reveal>
           <h2 class="contact__label">Correo</h2>
-          <a class="contact__email" href={`mailto:${site.email}`}>{site.email}</a>
+          <span class="contact__email">{site.email}</span>
         </article>
 
-        <a class="btn btn--primary contact__cta" href={`mailto:${site.email}`} data-reveal>
+        <a
+          class="btn btn--primary contact__cta"
+          href={whatsappHref}
+          target="_blank"
+          rel="noreferrer"
+          data-reveal
+        >
           Agendar una revisión
         </a>
       </div>
@@ -158,11 +166,13 @@ const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`;
     font-family: var(--font-display);
     font-size: 1.12rem;
     letter-spacing: -0.01em;
+  }
+
+  .contact__phones a {
     transition: color 0.25s ease, transform 0.25s ease;
   }
 
-  .contact__phones a:hover,
-  .contact__email:hover {
+  .contact__phones a:hover {
     color: var(--c-neon);
     transform: translateX(4px);
   }
