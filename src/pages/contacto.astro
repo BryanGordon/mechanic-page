@@ -1,25 +1,218 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site';
+
+const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, '')}`;
 ---
 
-<Layout title="Contacto">
-  <section class="stub">
-    <p class="eyebrow" data-reveal>Contacto</p>
-    <h1 data-reveal>Esta sección se construye en el siguiente paso.</h1>
+<Layout
+  title="Contacto"
+  description="Direcciones, teléfonos y ubicación de los talleres Nova Motor."
+>
+  <section class="contact" aria-labelledby="contact-title">
+    <header class="contact__head">
+      <p class="eyebrow" data-reveal>Contacto</p>
+      <h1 class="contact__title" id="contact-title" data-reveal>
+        Dos talleres, el mismo estándar.
+      </h1>
+      <p class="contact__lead" data-reveal>
+        Llama, escribe o llega directo. Si el carro no arranca, coordinamos el recojo.
+      </p>
+    </header>
+
+    <div class="contact__grid">
+      <div class="contact__info">
+        <article class="contact__block" data-reveal>
+          <h2 class="contact__label">Ubicación</h2>
+          <ul class="contact__addresses">
+            {site.addresses.map((address) => (
+              <li>{address}</li>
+            ))}
+          </ul>
+          <p class="contact__hours">{site.hours}</p>
+        </article>
+
+        <article class="contact__block" data-reveal>
+          <h2 class="contact__label">Teléfonos</h2>
+          <ul class="contact__phones">
+            {site.phones.map((phone) => (
+              <li>
+                <a href={telHref(phone)}>{phone}</a>
+              </li>
+            ))}
+          </ul>
+        </article>
+
+        <article class="contact__block" data-reveal>
+          <h2 class="contact__label">Correo</h2>
+          <a class="contact__email" href={`mailto:${site.email}`}>{site.email}</a>
+        </article>
+
+        <a class="btn btn--primary contact__cta" href={`mailto:${site.email}`} data-reveal>
+          Agendar una revisión
+        </a>
+      </div>
+
+      <aside class="contact__map" data-reveal>
+        <div class="contact__map-frame">
+          <iframe
+            src={site.mapUrl}
+            title="Ubicación de los talleres Nova Motor en el mapa"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+        <div class="contact__map-foot">
+          <p class="contact__map-text">Zona Industrial Norte · Urb. Santa Elena</p>
+          <a
+            class="contact__map-link"
+            href={site.mapLink}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Abrir en el mapa
+          </a>
+        </div>
+      </aside>
+    </div>
   </section>
 </Layout>
 
 <style>
-  .stub {
-    display: grid;
-    gap: 22px;
-    align-content: center;
-    min-height: 56vh;
-    max-width: 760px;
+  .contact {
+    padding-block: 30px 100px;
   }
 
-  .stub h1 {
-    font-size: clamp(2rem, 3.4vw, 3rem);
-    opacity: 0.75;
+  .contact__head {
+    display: grid;
+    gap: 20px;
+    max-width: 880px;
+    margin-bottom: 64px;
+  }
+
+  .contact__title {
+    font-size: clamp(2.6rem, 4.4vw, 4.2rem);
+    text-wrap: balance;
+  }
+
+  .contact__lead {
+    max-width: 560px;
+    font-size: 1rem;
+    opacity: 0.7;
+  }
+
+  .contact__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 64px;
+    align-items: start;
+  }
+
+  .contact__info {
+    display: grid;
+    gap: 38px;
+    align-content: start;
+  }
+
+  .contact__block {
+    display: grid;
+    gap: 14px;
+    padding-block: 26px;
+    border-top: 1px solid rgba(242, 242, 242, 0.1);
+  }
+
+  .contact__block:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .contact__label {
+    font-family: var(--font-display);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--c-neon);
+  }
+
+  .contact__addresses {
+    display: grid;
+    gap: 8px;
+    font-size: 1.02rem;
+  }
+
+  .contact__hours {
+    font-size: 0.9rem;
+    opacity: 0.55;
+  }
+
+  .contact__phones {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 24px;
+  }
+
+  .contact__phones a,
+  .contact__email {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 1.12rem;
+    letter-spacing: -0.01em;
+    transition: color 0.25s ease, transform 0.25s ease;
+  }
+
+  .contact__phones a:hover,
+  .contact__email:hover {
+    color: var(--c-neon);
+    transform: translateX(4px);
+  }
+
+  .contact__cta {
+    justify-self: start;
+  }
+
+  .contact__map {
+    display: grid;
+    gap: 16px;
+  }
+
+  .contact__map-frame {
+    overflow: hidden;
+    border: 1px solid rgba(255, 207, 229, 0.22);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .contact__map-frame iframe {
+    display: block;
+    width: 100%;
+    height: 520px;
+    border: 0;
+    filter: saturate(0.55) contrast(0.95) brightness(0.92);
+  }
+
+  .contact__map-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    font-size: 0.88rem;
+  }
+
+  .contact__map-text {
+    opacity: 0.6;
+  }
+
+  .contact__map-link {
+    font-family: var(--font-display);
+    font-size: 0.76rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-neon);
+    white-space: nowrap;
+  }
+
+  .contact__map-link:hover {
+    color: var(--c-text);
   }
 </style>
